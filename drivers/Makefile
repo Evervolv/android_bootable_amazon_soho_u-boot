@@ -1,0 +1,194 @@
+#
+# (C) Copyright 2000-2004
+# Wolfgang Denk, DENX Software Engineering, wd@denx.de.
+#
+# See file CREDITS for list of people who contributed to this
+# project.
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License as
+# published by the Free Software Foundation; either version 2 of
+# the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+# MA 02111-1307 USA
+#
+
+include $(TOPDIR)/config.mk
+
+# CFLAGS += -DET_DEBUG -DDEBUG
+
+LIB	= libdrivers.a
+
+OBJS	= 3c589.o 5701rls.o ali512x.o \
+	  bcm570x.o bcm570x_autoneg.o cfb_console.o cfi_flash.o \
+	  cs8900.o ct69000.o dataflash.o dc2114x.o dm9000x.o \
+	  e1000.o eepro100.o \
+	  i8042.o inca-ip_sw.o keyboard.o \
+	  lan91c96.o \
+	  natsemi.o ne2000.o netarm_eth.o netconsole.o \
+	  ns16550.o ns8382x.o ns87308.o ns7520_eth.o omap1510_i2c.o \
+	  omap24xx_i2c.o pci.o pci_auto.o pci_indirect.o \
+	  pcnet.o plb2800_eth.o \
+	  ps2ser.o ps2mult.o pc_keyb.o \
+	  rtl8019.o rtl8139.o rtl8169.o \
+	  s3c4510b_eth.o s3c4510b_uart.o \
+	  sed13806.o sed156x.o \
+	  serial.o serial_max3100.o \
+	  serial_pl010.o serial_pl011.o serial_xuartlite.o \
+	  sl811_usb.o sm501.o smc91111.o smiLynxEM.o \
+	  status_led.o sym53c8xx.o \
+	  twl4030.o ti_pci1410a.o tigon3.o tsec.o \
+	  usbdcore.o usbdcore_ep0.o usbdcore_omap1510.o usbtty.o \
+	  videomodes.o w83c553f.o \
+	  ks8695eth.o smsc9118.o \
+	  pxa_pcmcia.o mpc8xx_pcmcia.o tqm8xx_pcmcia.o	\
+	  rpx_pcmcia.o fastboot.o ks885x_interface.o \
+	  bq27541.o bq27200.o
+
+OBJS	+= battery_loop.o display_lcd.o twl6030.o smb347.o
+
+ifeq ($(PLATFORM), jem)
+OBJS	+= jem_lcd.o splash.o lowbattery.o show_charging.o showfastboot.o show_multi_download.o devicetoohot.o
+OBJS	+= bowser_bl.o dmtimer.o show_charging_low.o
+endif
+ifeq ($(PLATFORM), soho)
+OBJS	+= soho_lcd.o splash_tate.o lowbattery_tate.o charging_tate.o showfastboot_tate.o show_multi_download.o devicetoohot_tate.o
+OBJS	+= soho_sound.o
+endif
+
+ifeq ($(PLATFORM), bowser)
+OBJS	+= tate_lcd.o splash_tate.o lowbattery_tate.o showfastboot_tate.o charging_tate.o provfailed_tate.o devicetoohot_tate.o
+OBJS	+= bowser_bl.o dmtimer.o
+endif
+
+all:	.depend $(LIB)
+
+ifeq ($(PLATFORM), jem)
+
+splash.o:
+	$(OBJCOPY) -I binary -O elf32-littlearm -B arm initlogo.rle $@
+
+devicetoohot.o:
+	$(OBJCOPY) -I binary -O elf32-littlearm -B arm devicetoohot.gz $@
+
+lowbattery.o:
+	$(OBJCOPY) -I binary -O elf32-littlearm -B arm lowbattery.gz $@
+
+show_charging_low.o:
+	$(OBJCOPY) -I binary -O elf32-littlearm -B arm charging_low.gz $@
+
+show_charging.o:
+	$(OBJCOPY) -I binary -O elf32-littlearm -B arm charging.gz $@
+
+showfastboot.o:
+	$(OBJCOPY) -I binary -O elf32-littlearm -B arm fastboot.gz $@
+
+show_multi_download.o:
+	$(OBJCOPY) -I binary -O elf32-littlearm -B arm multi_download.gz $@
+endif
+ifeq ($(PLATFORM), soho)
+
+splash_tate.o:
+	$(OBJCOPY) -I binary -O elf32-littlearm -v -B arm initlogo_soho.gz $@
+
+devicetoohot_tate.o:
+	$(OBJCOPY) -I binary -O elf32-littlearm -v -B arm devicetoohot_soho.gz $@
+
+lowbattery_tate.o:
+	$(OBJCOPY) -I binary -O elf32-littlearm -v -B arm lowbattery_tate.gz $@
+
+charging_tate.o:
+	$(OBJCOPY) -I binary -O elf32-littlearm -v -B arm charging_tate.gz $@
+
+charging_tate_low.o:
+	$(OBJCOPY) -I binary -O elf32-littlearm -v -B arm charging_tate_low.gz $@
+
+showfastboot_tate.o:
+	$(OBJCOPY) -I binary -O elf32-littlearm -v -B arm fastboot_tate.gz $@
+
+show_multi_download.o:
+	$(OBJCOPY) -I binary -O elf32-littlearm -B arm multi_download.gz $@
+endif
+
+ifeq ($(PLATFORM), bowser)
+
+splash_tate.o:
+	$(OBJCOPY) -I binary -O elf32-littlearm -v -B arm initlogo_tate.rle $@
+
+devicetoohot_tate.o:
+	$(OBJCOPY) -I binary -O elf32-littlearm -v -B arm devicetoohot.rle $@
+
+provfailed_tate.o:
+	$(OBJCOPY) -I binary -O elf32-littlearm -v -B arm provfailed.rle $@
+
+lowbattery_tate.o:
+	$(OBJCOPY) -I binary -O elf32-littlearm -v -B arm lowbattery_tate.gz $@
+
+charging_tate.o:
+	$(OBJCOPY) -I binary -O elf32-littlearm -v -B arm charging_tate.gz $@
+
+showfastboot_tate.o:
+	$(OBJCOPY) -I binary -O elf32-littlearm -v -B arm fastboot_tate.gz $@
+endif
+
+
+ifeq ($(PLATFORM), tate)
+
+splash_tate.o:
+	$(OBJCOPY) -I binary -O elf32-littlearm -v -B arm initlogo_tate.rle $@
+
+devicetoohot_tate.o:
+	$(OBJCOPY) -I binary -O elf32-littlearm -v -B arm devicetoohot.rle $@
+
+provfailed_tate.o:
+	$(OBJCOPY) -I binary -O elf32-littlearm -v -B arm provfailed.rle $@
+
+lowbattery_tate.o:
+	$(OBJCOPY) -I binary -O elf32-littlearm -v -B arm lowbattery_tate.gz $@
+
+charging_tate.o:
+	$(OBJCOPY) -I binary -O elf32-littlearm -v -B arm charging_tate.gz $@
+
+showfastboot_tate.o:
+	$(OBJCOPY) -I binary -O elf32-littlearm -v -B arm fastboot_tate.gz $@
+
+endif
+
+ifeq ($(PLATFORM), otter2)
+
+splash_otter2.o:
+	$(OBJCOPY) -I binary -O elf32-littlearm -B arm initlogo_otter2.rle $@
+
+lowbattery_otter2.o:
+	$(OBJCOPY) -I binary -O elf32-littlearm -B arm lowbattery_otter2.gz $@
+
+lowbattery_charging_otter2.o:
+	$(OBJCOPY) -I binary -O elf32-littlearm -B arm lowbattery_charging_otter2.gz $@
+
+authfailed_otter2.o:
+	$(OBJCOPY) -I binary -O elf32-littlearm -B arm authfailed_otter2.gz $@
+
+fastboot_logo_otter2.o:
+	$(OBJCOPY) -I binary -O elf32-littlearm -B arm fastboot_logo_otter2.gz $@
+
+endif
+
+$(LIB): $(OBJS)
+	$(AR) crv $@ $(OBJS)
+
+#########################################################################
+
+.depend:	Makefile $(wildcard $(OBJS:.o=.c))
+		$(CC) -M $(CFLAGS) $(wildcard $(OBJS:.o=.c)) > $@
+
+sinclude .depend
+
+#########################################################################
