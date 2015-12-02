@@ -1152,8 +1152,8 @@ int idme_get_board_type_rev_string(char *bt)
                         strncpy(bt, "Soho-DVT-Eng-", strlen("Soho-DVT-Eng-"));
                         bt += strlen("Soho-DVT-Eng-");
                 }else if (strncmp(pBd, "80807", 5) >= 0){
-                        strncpy(bt, "Soho-PVT-Prod-", strlen("Soho-PVT-Prod-"));
-                        bt += strlen("Soho-PVT-Prod-");
+                        strncpy(bt, "Soho-PVT-Unlocked-", strlen("Soho-PVT-Unlocked-"));
+                        bt += strlen("Soho-PVT-Unlocked-");
                 }else {
                         goto unknown_board;
                 }
