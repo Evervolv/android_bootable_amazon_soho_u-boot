@@ -1441,12 +1441,6 @@ static int tate_Init_LCD(void)
 	//Set DPLL for DSI
 	dsi_set_dpll();
 
-	//set DSI Phy
-	dsi_set_phy();
-
-	//set DSI protocol engine
-	dsi_set_protocol_engine();
-
 	//set to Videomode
 	dsi_video_preinit();
 
