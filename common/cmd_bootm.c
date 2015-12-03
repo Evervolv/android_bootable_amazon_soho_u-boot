@@ -1618,19 +1618,19 @@ int do_booti (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
 		 * 0x80008000. With this trick we don't have to move kernel
 		 * again
 		 */
-		load_addr = KERNEL_PHY_LOAD_ADDRESS -
-			(ISW_CERTIFICATE_LENGTH_FULL + CFG_FASTBOOT_MKBOOTIMAGE_PAGE_SIZE);
+		load_addr = KERNEL_PHY_LOAD_ADDRESS - CFG_FASTBOOT_MKBOOTIMAGE_PAGE_SIZE;
 
-		if(authentify_image(mmcc, pte->start) != 0) {
-			printf("booti: Authentification failure\n");
-#ifdef CONFIG_MACH_OTTER2
-			show_authfailed();
-#endif
-			goto fail;
-		}
+        if (mmc_read(mmcc, pte->start + ISW_CERTIFICATE_LENGTH_BLOCKS, load_addr, CFG_FASTBOOT_MKBOOTIMAGE_PAGE_SIZE) != 1) {
+            printf("booti: mmc failed to read certificate\n");
+            return -1;
+        }
 
 		/* set the boot.img header */
-		hdr = (unsigned char *)load_addr + ISW_CERTIFICATE_LENGTH_FULL;
+		hdr = (unsigned char *)load_addr;
+        if (mmc_read(mmcc, pte->start + ISW_CERTIFICATE_LENGTH_BLOCKS, load_addr, CFG_FASTBOOT_MKBOOTIMAGE_PAGE_SIZE + ALIGN(hdr->kernel_size, hdr->page_size) + hdr->ramdisk_size) != 1) {
+            printf("booti: mmc failed to read certificate\n");
+            return -1;
+        }
 
 		if (memcmp(hdr->magic, BOOT_MAGIC, 8)) {
 			printf("booti: bad boot image magic\n");
