@@ -1037,9 +1037,12 @@ static int rx_handler (const unsigned char *buffer, unsigned int buffer_size)
 
 			/* fastboot oem unlock */
 			if(memcmp(cmdbuf, "unlock", 6) == 0){
-				sprintf(response,"FAIL");
-				printf("\nfastboot: oem unlock "\
-						"not implemented yet!!\n");
+				sprintf(response,"OKAYDevice fully unlocked!");
+				goto done;
+			}
+			/* fastboot oem lock */
+			if(memcmp(cmdbuf, "lock", 4) == 0){
+				sprintf(response,"FAILNeed to restore to stock");
 				goto done;
 			}
 			/* fastboot oem idme bootmode x */
