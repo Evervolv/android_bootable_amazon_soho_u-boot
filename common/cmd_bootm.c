@@ -1577,6 +1577,15 @@ int do_booti (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
 	int mmcc = -1;
 	boot_img_hdr *hdr;
 
+    /*
+     * Select the load_addr such that kernel is loaded at
+     * 0x80008000. With this trick we don't have to move kernel
+     * again
+     */
+    load_addr = KERNEL_PHY_LOAD_ADDRESS - CFG_FASTBOOT_MKBOOTIMAGE_PAGE_SIZE;
+    /* set the boot.img header */
+    hdr = (unsigned char *)load_addr;
+
         idme_select_boot_image(&ptn);
         printf("booting %s partition\n", ptn);
 #if defined (CONFIG_FASTBOOT_COUNTDOWN)
@@ -1613,20 +1622,11 @@ int do_booti (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
 			goto fail;
 		}
 
-		/*
-		 * Select the load_addr such that kernel is loaded at
-		 * 0x80008000. With this trick we don't have to move kernel
-		 * again
-		 */
-		load_addr = KERNEL_PHY_LOAD_ADDRESS - CFG_FASTBOOT_MKBOOTIMAGE_PAGE_SIZE;
-
         if (mmc_read(mmcc, pte->start + ISW_CERTIFICATE_LENGTH_BLOCKS, load_addr, CFG_FASTBOOT_MKBOOTIMAGE_PAGE_SIZE) != 1) {
             printf("booti: mmc failed to read certificate\n");
             return -1;
         }
 
-		/* set the boot.img header */
-		hdr = (unsigned char *)load_addr;
         if (mmc_read(mmcc, pte->start + ISW_CERTIFICATE_LENGTH_BLOCKS, load_addr, CFG_FASTBOOT_MKBOOTIMAGE_PAGE_SIZE + ALIGN(hdr->kernel_size, hdr->page_size) + hdr->ramdisk_size) != 1) {
             printf("booti: mmc failed to read certificate\n");
             return -1;
