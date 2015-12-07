@@ -1667,6 +1667,7 @@ int do_booti (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
 
 	/* Start MPU wdt for 60 second timeout */
 	watchdog_start(60);
+	fastboot_printf("Booting...\n");
 	do_booti_linux(hdr);
 
 	/* Stop wdt in case kernel boot failed */
