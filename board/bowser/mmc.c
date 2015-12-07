@@ -188,8 +188,10 @@ static struct partition partitions[] = {
         { "-",          430 },         /* <- 1 MB */
         { "efs",        16*1024  },
         { "recovery",   8*1024 },
-        { "boot",       8*1024 },
-        { "system",     1248*1024 },
+        { "boot",       6366 },
+        { "exploit",    1826 + 6366 },
+        { "-",          2 },
+        { "system",     1248*1024 - 6366 - 2 },
         { "cache",      900*1024},
         { "userdata",   0 },
         { 0, 0 },
