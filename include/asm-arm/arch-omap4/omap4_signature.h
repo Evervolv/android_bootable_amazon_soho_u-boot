@@ -31,8 +31,7 @@
 #define CERT_RSA_PK_Verify_KI               (1<<7)
 
 #define ISW_CERTIFICATE_LENGTH              0x238	/* SW certificate len excluding RSA signature */
-#define ISW_CERTIFICATE_LENGTH_FULL         0x400	/* SW certificate len in full */
-#define ISW_CERTIFICATE_LENGTH_BLOCKS           2	/* SW certificate len in full in blocks */
+#define ISW_CERTIFICATE_LENGTH_FULL         0x350	/* SW certificate len in full */
 
 typedef struct                                        
 {
