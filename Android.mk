@@ -1,33 +1,26 @@
-UBOOT_DIR := $(call my-dir)
-ROOTDIR := $(abspath $(TOP))
+LOCAL_PATH := $(call my-dir)
 
-UBOOT_IMAGE_INTERMEDIATES := $(UBOOT_DIR)/u-boot.bin
+ifeq ($(strip $(LOCAL_PATH)),$(TARGET_UBOOT_DIR))
 
-UBOOT_IMAGE := $(PRODUCT_OUT)/u-boot.bin
+TARGET_UBOOT := $(PRODUCT_OUT)/u-boot.bin
+UBOOT_OUT := $(abspath $(TARGET_OUT_INTERMEDIATES)/u-boot)
+UBOOT_MAKE := $(MAKE) -C $(UBOOT_OUT) CROSS_COMPILE=arm-eabi-
 
-UBOOT_CONFIG := $(UBOOT_DIR)/include/config.h
+.PHONY: u-boot
+u-boot: $(TARGET_UBOOT)
+all_modules: u-boot
 
-$(UBOOT_IMAGE): $(UBOOT_IMAGE_INTERMEDIATES) uboot-intermediates | $(ACP)
-ifeq ($(PRODUCT_SIGN_BOOTLOADER),true)
-	$(hide) $(PRODUCT_SIGN_TOOL) -k $(SIGN_KEY_TYPE) $(SIGN_CHIP) $(SIGN_CHIP_VERSION) $< -o $@
-else
-	$(copy-file-to-target)
+$(TARGET_UBOOT): $(UBOOT_OUT)/u-boot.bin
+	$(hide) cp $< $@
+
+$(UBOOT_OUT)/u-boot.bin: $(UBOOT_OUT) $(UBOOT_OUT)/include/config.h
+	$(hide) $(UBOOT_MAKE)
+
+$(UBOOT_OUT)/include/config.h:
+	$(hide) $(UBOOT_MAKE) $(TARGET_UBOOT_CONFIG)
+
+$(UBOOT_OUT): $(LOCAL_PATH)
+	$(hide) cd $(TARGET_UBOOT_DIR); find . -type f -exec sh -c 'mkdir -p "$(UBOOT_OUT)/$$(dirname {})"; ln -sf "$(abspath $(TARGET_UBOOT_DIR))/{}" "$(UBOOT_OUT)/{}"' \;
+	$(hide) rm $(UBOOT_OUT)/Android.mk
+
 endif
-	$(hide) mkdir -p $(PRODUCT_OUT)/unsigned && cp -f $(UBOOT_IMAGE_INTERMEDIATES) $(PRODUCT_OUT)/unsigned/u-boot.unsigned.bin
-
-$(UBOOT_IMAGE_INTERMEDIATES): uboot-intermediates | $(UBOOT_DIR)
-
-uboot-config: $(UBOOT_CONFIG)
-
-$(UBOOT_CONFIG): $(UBOOT_DEFCONFIG) | $(UBOOT_DIR)
-	$(MAKE) -C $(UBOOT_DIR) distclean
-	$(MAKE) -C $(UBOOT_DIR) ARCH=arm CROSS_COMPILE=$(UBOOT_CROSS_COMPILE) $(UBOOT_DEFCONFIG) PLATFORM=$(UBOOT_PLATFORM)
-
-uboot-intermediates: uboot-config | $(UBOOT_DIR)
-ifeq ($(TARGET_BUILD_VARIANT), user)
-	$(MAKE) -C $(UBOOT_DIR) ARCH=arm CROSS_COMPILE=$(UBOOT_CROSS_COMPILE) PLATFORM=$(UBOOT_PLATFORM) -j1
-else
-	$(MAKE) -C $(UBOOT_DIR) ARCH=arm CROSS_COMPILE=$(UBOOT_CROSS_COMPILE) PLATFORM=$(UBOOT_PLATFORM) EXTRA_CFLAGS=-DUBOOT_ENG_BUILD -j1
-endif
-
-uboot: $(UBOOT_IMAGE)
