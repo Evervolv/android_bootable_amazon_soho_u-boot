@@ -13,11 +13,11 @@ all_modules: u-boot
 $(INSTALLED_UBOOT_TARGET): $(UBOOT_OUT)/u-boot.bin
 	$(hide) cp $< $@
 
-$(UBOOT_OUT)/u-boot.bin: $(UBOOT_OUT) $(UBOOT_OUT)/include/config.h
+$(UBOOT_OUT)/u-boot.bin: $(UBOOT_OUT)/include/config.h
 	$(hide) $(UBOOT_MAKE)
 
-$(UBOOT_OUT)/include/config.h:
-	$(UBOOT_MAKE) $(TARGET_UBOOT_CONFIG)
+$(UBOOT_OUT)/include/config.h: $(UBOOT_OUT)
+	$(hide) $(UBOOT_MAKE) $(TARGET_UBOOT_CONFIG)
 
 $(UBOOT_OUT): $(LOCAL_PATH)
 	$(hide) cd $(TARGET_UBOOT_DIR); find . -type f -exec sh -c 'mkdir -p "$(UBOOT_OUT)/$$(dirname {})"; ln -sf "$(abspath $(TARGET_UBOOT_DIR))/{}" "$(UBOOT_OUT)/{}"' \;
