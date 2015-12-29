@@ -1843,32 +1843,10 @@ omap4430sdp_config :    unconfig
 omap4430panda_config :    unconfig
 	@./mkconfig $(@:_config=) arm omap4 omap4430panda
 
-bowser_config:    unconfig
-	@./mkconfig $(@:_config=) arm omap4 bowser 
-	echo "#define CONFIG_MACH_BOWSER" >> ./include/config.h ; \
-	echo "Configuring for Bowser .... ";
-
-
-tate_config:    unconfig
-	@./mkconfig $(@:_config=) arm omap4 bowser
-	echo "#define CONFIG_MACH_BOWSER_SUBTYPE_TATE" >> ./include/config.h ; \
-	echo "Configuring for Tate .... ";
-
-jem_config:    unconfig
-	@./mkconfig $(@:_config=) arm omap4 bowser
-	echo "#define CONFIG_SPLASH" >> ./include/config.h ; \
-	echo "#define CONFIG_MACH_BOWSER_SUBTYPE_JEM" >> ./include/config.h ; \
-	echo "Configuring for Jem with splash screen enabled.... ";
-
 soho_config:    unconfig
 	@./mkconfig $(@:_config=) arm omap4 bowser
 	echo "#define CONFIG_MACH_BOWSER_SUBTYPE_SOHO" >> ./include/config.h ; \
 	echo "Configuring for soho with splash screen enabled.... ";
-
-omap4430otter2_config :    unconfig
-	@./mkconfig $(@:_config=) arm omap4 omap4430otter2
-	echo "#define CONFIG_MACH_OTTER2" >> ./include/config.h ; \
-	echo "Configuring for Otter2 .... ";
 
 #========================================================================
 # i386

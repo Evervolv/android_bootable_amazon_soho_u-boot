@@ -57,8 +57,6 @@
 #define		WK(x)	(CONTROL_WKUP_##x)
 
 /*Platform pinmux setting*/
-#include "bowser_pinmux.c"
-#include "jem_pinmux.c"
 #include "soho_pinmux.c"
 
 #define MUX_BOWSER_EMMC_8BIT() \
@@ -122,25 +120,9 @@ void set_muxconf_late(void)
 		config_lp855x(1);
 #endif
 
-#if defined(CONFIG_MACH_BOWSER_SUBTYPE_JEM)
-	extern void register_jem_display(void);
-	register_jem_display();
-#endif
-
-
-	/* re-configure the pinmux for JEM hardware */
-	if (strncmp(idme, "802", 3) == 0 ||
-            strncmp(idme, "001", 3) == 0 ||
-	    strncmp(idme, "801", 3) == 0) {
-		printf("JEM_MUX_INIT called\n");
-		MUX_SECONDARY_BOWSER5();
-		JEM_EVT2_PINMUX_CHANGES();
-	} else if (strncmp(idme, "808", 3) == 0 ) {
+	if (strncmp(idme, "808", 3) == 0 ) {
 		printf("SOHO Pinmux configuration\n");
 		MUX_SOHO();
-	} else {
-		printf("Bowser only mux configuration\n");
-		MUX_SECONDARY_BOWSER5();
 	}
 	
 	return;

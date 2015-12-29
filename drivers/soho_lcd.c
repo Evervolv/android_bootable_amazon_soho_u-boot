@@ -1599,20 +1599,20 @@ static void display_reinit()
 
 
 /* initlogo.rle data */
-extern u_int16_t const _binary_initlogo_soho_gz_start[];
+extern u_int16_t const _binary_initlogo_gz_start[];
 /* lowbattery.gz data */
-extern u_int16_t const _binary_lowbattery_tate_gz_start[];
-extern u_int16_t const _binary_lowbattery_tate_gz_end[];
+extern u_int16_t const _binary_lowbattery_gz_start[];
+extern u_int16_t const _binary_lowbattery_gz_end[];
 /* charging.gz data */
-extern u_int16_t const _binary_charging_tate_gz_start[];
-extern u_int16_t const _binary_charging_tate_gz_end[];
+extern u_int16_t const _binary_charging_gz_start[];
+extern u_int16_t const _binary_charging_gz_end[];
 /* charging_tate_low.gz */
-extern u_int16_t const _binary_charging_tate_low_gz_start[];
+extern u_int16_t const _binary_charging_low_gz_start[];
 /* devicetoohot.gz data */
-extern u_int16_t const _binary_devicetoohot_soho_gz_start[];
+extern u_int16_t const _binary_devicetoohot_gz_start[];
 /* fastboot.gz data */
-extern u_int16_t const _binary_fastboot_tate_gz_start[];
-extern u_int16_t const _binary_fastboot_tate_gz_end[];
+extern u_int16_t const _binary_fastboot_gz_start[];
+extern u_int16_t const _binary_fastboot_gz_end[];
 /* multi_download.gz data */
 extern char const _binary_multi_download_gz_start[];
 extern char const _binary_multi_download_gz_end[];
@@ -1633,14 +1633,14 @@ struct display_lcd_s tate_display = {
 .binary_initlogo_rle_end        =(u_int16_t *) NULL,
 .binary_provfailed_rle_start    =(u_int16_t *) NULL,
 .binary_provfailed_rle_end      =(u_int16_t *) NULL,
-.binary_initlogo_gz_start	=(void *)_binary_initlogo_soho_gz_start,
-.binary_lowbattery_gz_start     =(void *)_binary_lowbattery_tate_gz_start,
-.binary_charging_gz_start       =(void *)_binary_charging_tate_gz_start,
+.binary_initlogo_gz_start	=(void *)_binary_initlogo_gz_start,
+.binary_lowbattery_gz_start     =(void *)_binary_lowbattery_gz_start,
+.binary_charging_gz_start       =(void *)_binary_charging_gz_start,
 .binary_charging_low_gz_start       =(void *) NULL,
 .binary_devicetoohot_rle_start =(u_int16_t *) NULL,
 .binary_devicetoohot_rle_end   =(u_int16_t *) NULL,
-.binary_devicetoohot_gz_start  =(void *) _binary_devicetoohot_soho_gz_start,
-.binary_fastboot_gz_start       =(void *)_binary_fastboot_tate_gz_start,
+.binary_devicetoohot_gz_start  =(void *) _binary_devicetoohot_gz_start,
+.binary_fastboot_gz_start       =(void *)_binary_fastboot_gz_start,
 .binary_multi_download_gz_start =(void *)_binary_multi_download_gz_start,
 } ;
 

@@ -40,8 +40,6 @@
 #include <twl4030.h>
 #include <twl6030.h>
 #include <config.h>
-#include <otter2_lcd.h>
-#include <twl6030-otter2.h>
 #include <idme.h>
 
 #ifdef CONFIG_FASTBOOT_ENHANCE_SPEED

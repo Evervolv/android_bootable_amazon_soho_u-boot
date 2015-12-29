@@ -55,28 +55,28 @@ OBJS	= 3c589.o 5701rls.o ali512x.o \
 
 OBJS	+= battery_loop.o display_lcd.o twl6030.o smb347.o
 
-OBJS	+= soho_lcd.o splash_tate.o lowbattery_tate.o charging_tate.o showfastboot_tate.o show_multi_download.o devicetoohot_tate.o
+OBJS	+= soho_lcd.o splash.o lowbattery.o charging.o showfastboot.o show_multi_download.o devicetoohot.o
 OBJS	+= soho_sound.o
 
 all:	.depend $(LIB)
 
-splash_tate.o:
-	$(OBJCOPY) -I binary -O elf32-littlearm -v -B arm initlogo_soho.gz $@
+splash.o:
+	$(OBJCOPY) -I binary -O elf32-littlearm -v -B arm initlogo.gz $@
 
-devicetoohot_tate.o:
-	$(OBJCOPY) -I binary -O elf32-littlearm -v -B arm devicetoohot_soho.gz $@
+devicetoohot.o:
+	$(OBJCOPY) -I binary -O elf32-littlearm -v -B arm devicetoohot.gz $@
 
-lowbattery_tate.o:
-	$(OBJCOPY) -I binary -O elf32-littlearm -v -B arm lowbattery_tate.gz $@
+lowbattery.o:
+	$(OBJCOPY) -I binary -O elf32-littlearm -v -B arm lowbattery.gz $@
 
-charging_tate.o:
-	$(OBJCOPY) -I binary -O elf32-littlearm -v -B arm charging_tate.gz $@
+charging.o:
+	$(OBJCOPY) -I binary -O elf32-littlearm -v -B arm charging.gz $@
 
-charging_tate_low.o:
-	$(OBJCOPY) -I binary -O elf32-littlearm -v -B arm charging_tate_low.gz $@
+charging_low.o:
+	$(OBJCOPY) -I binary -O elf32-littlearm -v -B arm charging_low.gz $@
 
-showfastboot_tate.o:
-	$(OBJCOPY) -I binary -O elf32-littlearm -v -B arm fastboot_tate.gz $@
+showfastboot.o:
+	$(OBJCOPY) -I binary -O elf32-littlearm -v -B arm fastboot.gz $@
 
 show_multi_download.o:
 	$(OBJCOPY) -I binary -O elf32-littlearm -B arm multi_download.gz $@
