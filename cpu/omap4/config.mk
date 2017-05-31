@@ -23,6 +23,8 @@ PLATFORM_RELFLAGS += -fno-strict-aliasing  -fno-common -ffixed-r8 \
 	-msoft-float
 
 PLATFORM_CPPFLAGS += -march=armv7-a
+
+LOCAL_C_INCLUDES += $(TARGET_OUT_INTERMEDIATES)/u-boot/include
 # =========================================================================
 #
 # Supply options according to compiler version
